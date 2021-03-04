@@ -8,19 +8,19 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-/*const dirname = path.join(__dirname, '/html/pagamento.html');
+const dirname = path.join(__dirname, '/html/pagamento.html');
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
     'client_id': 'AYmxz0Ofabf6JYI5GvHw1D50EAh0fDwXMS9EpDQaGJzT9KqyJNkILLBfjlT_gNrApy7jNKiHKIwTTn5z',
     'client_secret': 'EFFqUYbQBRxOUJuWbqkqjQ7rDiBm2BfTIFwDQ9eFMBkprOBsfK9fxp-zzt6Snv7uWkW7sjK4G5lZLN5p'
   });
-  */
+  
 
 
 app.get('/', (req, res) =>{
     res.status(200).send(JSON.stringify({message: "Api NodeJS com integração para pagamento com paypal", autor: "Renato A dos Santos"}));
 });
-/*
+
 app.post('/pay', (req, res) => {
     console.log(req.body);
 
@@ -129,5 +129,5 @@ app.get('/order', (req, res) => {
             })
     })
 
-*/
+
 app.listen(process.env.PORT || 3000);
