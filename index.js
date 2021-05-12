@@ -31,7 +31,7 @@ app.post('/pay', (req,  res) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "hhttps://API-PayPal.demarchiti.repl.co/success",
+            "return_url": "https://API-PayPal.demarchiti.repl.co/success",
             "cancel_url": "http://cancel.url"
         },
         "transactions": [{
@@ -63,10 +63,10 @@ app.post('/pay', (req,  res) => {
             //          res.status(200).send({link: links.href});
             //      }
             //  })
-            console.log(payment.links)
 
             for(let i = 0; i <   payment.links.length; i++){
                 if(payment.links[i].rel  == 'approval_url'){
+           
                     res.status(200).send({link: payment.links[i].href});
                 }
             }
@@ -76,19 +76,21 @@ app.post('/pay', (req,  res) => {
 });
 
 app.get('/success', (req, res) => {
+ console.log( req.query.paymentId)
 
     var execute_payment_json = {
         "payer_id": req.query.PayerID,
         "transactions": [{
             "amount": {
-                "currency": "USD",
-                "total": "1.00"
+                "currency": "BRL",
+                "total": req.body.preco
             }
         }]
     }
 
     var paymentId = req.query.paymentId;
     var authid;
+    
     paypal.payment.execute(paymentId, execute_payment_json, function(error, payment){
         console.log(JSON.stringify(payment));
         if(error){
