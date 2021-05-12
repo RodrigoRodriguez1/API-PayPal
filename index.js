@@ -18,10 +18,11 @@ paypal.configure({
 
 
 app.get('/', (req, res) =>{
-    res.status(200).send(JSON.stringify({message: "Api NodeJS com integração para pagamento com paypal", autor: "Renato A dos Santos"}));
+    res.status(200).send(JSON.stringify({message: "Api NodeJS com integração para pagamento com paypal", autor: "Rodrigo Rodriguez"}));
 });
 
-app.post('/pay', (req, res) => {
+app.post('/pay', (req,  res) => {
+
     console.log(req.body);
 
     var create_payment_json = {
@@ -30,22 +31,22 @@ app.post('/pay', (req, res) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "https://Paypal-Rest-Sdk.renatoalcantara.repl.co/success",
+            "return_url": "hhttps://API-PayPal.demarchiti.repl.co/success",
             "cancel_url": "http://cancel.url"
         },
         "transactions": [{
             "item_list": {
                 "items": [{
-                    "name": "item",
+                    "name": req.body.name,
                     "sku": "item",
-                    "price": "1.00",
-                    "currency": "USD",
-                    "quantity": 1
+                    "price": req.body.preco,
+                    "currency": "BRL",
+                    "quantity": "1",
                 }]
             },
             "amount": {
-                "currency": "USD",
-                "total": "1.00"
+                "currency": "BRL",
+                "total": req.body.preco
             },
             "description": "This is the payment description."
         }]
@@ -56,16 +57,19 @@ app.post('/pay', (req, res) => {
         if (error) {
             throw error;
         } else {
-             payment.links.forEach(links => {
-                 if(links.rel == 'approval_url'){
-                     res.status(200).send({link: links.href});
-                 }
-             })
-            // for(let i = 0; i <.length; i++){
-            //     if(payment.links[i].rel  == 'approval_url'){
-            //         res.status(200).send({link: payment.links[i].href});
-            //     }
-            // }
+
+            //  payment.links.forEach(links => {
+            //      if(links.rel == 'approval_url'){
+            //          res.status(200).send({link: links.href});
+            //      }
+            //  })
+            console.log(payment.links)
+
+            for(let i = 0; i <   payment.links.length; i++){
+                if(payment.links[i].rel  == 'approval_url'){
+                    res.status(200).send({link: payment.links[i].href});
+                }
+            }
         }
     });
 
@@ -130,4 +134,4 @@ app.get('/order', (req, res) => {
     })
 
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000); 
